@@ -182,3 +182,34 @@ public final class System{
 Hence, System.out is actually an instance of PrintStream class. The println() in PrintStream class is an instance method ( not a static method). It takes a String as its argument and return Void
 
 2. Static method reference
+When you have a static method, you can pass a method reference using the class name
+
+For example: 
+```java
+public class GFG2 {
+
+	static void fun(TestInterface2 t) {
+		t.print();
+		
+	}
+	static void printMessage() {
+		System.out.println("Hello");
+	}
+	public static void main(String[] args) {
+		// fun method takes functional interface as an argument, therefore we can use lambda expression: 
+		
+		fun(() -> System.out.println("Hello"));
+		
+		// method reference
+		fun(GFG2::printMessage);
+	}	
+	
+}
+```
+## Why can't we use PrintStream :: println but we have to use System.out::println
+
+Syntax of method reference has another special type. It is an instance method reference, but it has ClassName::methodName structure as how static method reference does. An example of this type is  String::toUpperCase. 
+
+**So when we can use ClassName in an instance method reference?**
+
+Unlike String::toUpperCase, every instance of PrintStream is created by taking an instance of OutputStream as its argument. Without the instance of OutputStream class, instance of PrintStream cannot be created. In plain language, we need to know where/location we are going to print to. Using System.out, we tell JVM that the location to print to is the console screen. If we use just PrintStream::println, we will not know where to print the output of print(), hence must specify a specific location by call an instance of OutputStream. This is different to String class, because an instance of String does not need any other argument but the string itself. 
