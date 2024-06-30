@@ -213,3 +213,5 @@ Syntax of method reference has another special type. It is an instance method re
 **So when we can use ClassName in an instance method reference?**
 
 Unlike String::toUpperCase, every instance of PrintStream is created by taking an instance of OutputStream as its argument. Without the instance of OutputStream class, instance of PrintStream cannot be created. In plain language, we need to know where/location we are going to print to. Using System.out, we tell JVM that the location to print to is the console screen. If we use just PrintStream::println, we will not know where to print the output of print(), hence must specify a specific location by call an instance of OutputStream. This is different to String class, because an instance of String does not need any other argument but the string itself. 
+
+
