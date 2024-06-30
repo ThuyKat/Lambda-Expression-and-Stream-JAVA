@@ -58,7 +58,7 @@ Predicate<Integer> p2 = x -> x%2 == 0;
 ```
 - Places that expect a Funcitonal interface type of instance can be return, or argument of a method, or internal operation of a method
 
-* return a Functional Interface type of data
+-- return a Functional Interface type of data
 ```java
 public interface Hello {
 	public void sayHello();
@@ -69,7 +69,7 @@ public static Hello helperFunction() {
 }
 }
 ```
-* argument of functional interface type
+-- argument of functional interface type
 ```java
 public class Point {
 int x,y;
@@ -92,7 +92,7 @@ public class LambdaDemo {
 	}
 }
 ```
-* use functional interface in method's body
+-- use functional interface in method's body
 In the previous example, we assign lambda expression to a functional interface type of variable and pass it into if() condition
 
 ## Lambda Expression syntax for single line expression where return type is void
