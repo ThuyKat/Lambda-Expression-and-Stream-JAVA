@@ -93,6 +93,7 @@ public class LambdaDemo {
 }
 ```
 -- use functional interface in method's body
+
 In the previous example, we assign lambda expression to a functional interface type of variable and pass it into if() condition
 
 ## Lambda Expression syntax for single line expression where return type is void
