@@ -214,4 +214,131 @@ Syntax of method reference has another special type. It is an instance method re
 
 Unlike String::toUpperCase, every instance of PrintStream is created by taking an instance of OutputStream as its argument. Without the instance of OutputStream class, instance of PrintStream cannot be created. In plain language, we need to know where/location we are going to print to. Using System.out, we tell JVM that the location to print to is the console screen. If we use just PrintStream::println, we will not know where to print the output of print(), hence must specify a specific location by call an instance of OutputStream. This is different to String class, because an instance of String does not need any other argument but the string itself. 
 
+# Stream
+
+A stream is a pipeline of functions ( intermediate functions and 1 terminal function) applied on a source. A source can be an array, a collection, a lines of files, etc. 
+-> Components of a stream: source, intermediate functions, terminal function
+
+**.stream()**
+
+All collections that implement Collections interface( the root of most collections) has method stream(). This creates a stream out of that collection. A stream does not have its own storage, unlike a list, an array, etc. Therefore we have to start from a resource( list, array, files, etc), then create a stream out of that resource. 
+
+**Laziness: how stream() operates by default**
+
+Each intermediate will not go through all elements of the collection, instead each element of the collection will be passed through all intermediate function until it reaches terminal function OR it will be eliminated when going through a filter for example. 
+
+## BASE STREAM
+**can we change the default operation?**
+
+Yes. The collection interafce has a method call parallelStream(). All implementing collections have this method
+
+Parallel stream uses more resources and get things done faster by possibly taking advantage of multi-threading/processors. However, it's only good when having sufficient data and able to process parallelly. 
+
+parallel() is one of method in base stream. Apart from this method we have sequential(), unordered() are also method of base stream
+
+```java
+//sequential stream
+
+List<String> list = Arrays.asList("a","b","c","d","e");
+list.stream().forEach(System.out::println);
+
+//parallel stream
+list.stream().parallel().forEach(System.out::println);
+
+//use sequential() to convert parallel stream back to sequential stream
+list.stream().parallel().sequential().forEach(System.out::println);
+
+//unordered() is use to ignore the encounter order of elements in the stream. This removes the need to maintain order and useful for parallel operation
+list.stream().unordered().forEach(System.out::println);
+
+```
+Result: 
+```
+__default stream__
+a
+b
+c
+d
+e
+__parallel stream__
+c
+a
+e
+b
+d
+__sequential stream__
+a
+b
+c
+d
+e
+__unordered stream__
+a
+b
+c
+d
+e
+```
+## STREAM FOR PRIMITIVE TYPE OF DATA : IntStream, LongStream, DoubleStream
+
+- List of method that only presents in primitive-data stream: sum(), average(), boxed() - convert primitive type to non-primitive type of Wrapper class
+
+## STREAM FOR NON-PRIMITIVE TYPE OF DATA: Stream<T>
+
+## METHODS THAT USED FOR BOTH PRIMITIVE AND NON-PRIMITIVE TYPE OF STREAM DATA
+
+1. Print out a stream : forEach() - This is a terminal method
+
+Stream does not have toString() method, so we use forEach() to print out elements passing through the stream.
+
+2. Collecting the elements of stream into a collection to reuse or inspect: .collect() - This is a terminal method.
+
+Because Streams are consumable, it cannot be reused. If you try to preint the elements of the stream again after forEach() operation, it will throw an IllegalStateException
+
+It performs a mutable reduction operation on the elements using a Collector. Sometimes it uses to transform elements into a single result, an alternative for .reduce()
+
+for example: Stream.of(1, 2, 3).collect(Collectors.toList()) returns [ 1,2,3]
+
+for example: Stream.of("a","b","c").collect(Collectors.joining()) returns "abc"
+
+3. Debugging Streams: .peek() 
+
+This method allow you to print out or perform any action on the stream as it passes through without consuming it
+
+```java
+stream.peek(System.out::println).collect(Collectors.toList());
+```
+4. Filtering Streams: .filter() - This is an intermediate method
+
+To select elements that match a given predicate
+
+5. Mapping Stream: .map()  - This is an intermediate method
+
+To transform elements of a stream using a function/ use stream as input and produce new output of stream of any type via a function.
+
+6. Reducing Stream: .reduce() - This is an intermediate method
+
+To combine the element of a stream into a single result. 
+
+for example: .reduce("",String::concat) to concatenate all strings
+
+7. Finding elements in a stream: e.g finding the first, any, or checking if elements match a condition
+
+```java
+
+Optional<String>anyElement = list.stream().findAny(); //.findFirst()
+
+anyElement.ifPresent(System.out::pringln);
+
+```
+8. Matching if elements of a stream match a given predicate: anyMatch(), nonMatch(), allMatch()
+
+9. Sorting elements of a stream: sorted()
+
+for example: .sorted((s1,s2) -> Integer.compare(s1.length(),s2.length()))
+
+10. FlatMap to flatening nested structures
+
+
+
 
