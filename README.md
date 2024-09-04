@@ -1,7 +1,34 @@
 # Lambda-Expression-and-Stream-JAVA
 ## FUNCTIONAL INTERFACE
+**WHY FUNCTIONAL INTERFACE??**
+In Java, only objects and primitive data types can be passed as arguments of a function. Java doesn't have standalone functions as first-class citizens like some other languages (e.g., JavaScript). To pass "function-like" behavior, we use objects that encapsulate that behavior.In order to pass a function as an argument, we need to wrap it in an interface -> Functional Interface. 
 
-* Functional interface is an interface with only 1 abstract method and >=0 default/static methods. 
+* Functional interface is an interface with only 1 abstract method and >=0 default/static methods. It is the primary mechanism for representing "function-like" objects in Java.
+For example:
+```java
+// Functional interface
+interface MathOperation {
+    int operate(int a, int b);
+}
+
+public class Calculator {
+    public int calculate(int a, int b, MathOperation operation) {
+        return operation.operate(a, b);
+    }
+
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        
+        // Passing "add function" wrapped in MathOperation object
+        int sum = calc.calculate(5, 3, (a, b) -> a + b);
+        System.out.println("Sum: " + sum);
+
+        // Passing "multiply function" wrapped in MathOperation object
+        int product = calc.calculate(5, 3, (a, b) -> a * b);
+        System.out.println("Product: " + product);
+    }
+}
+```
 * E.g., interface Predicate<T> is a functional interface with only 1 abstract method void test(). 
 * With functional interface, we jsut need to provide implementation for 1 method then a class can implement the interface. Instead of creating a class and method inside the class for implementation, we can use Lambda expression to make it the code more concise
 
@@ -293,7 +320,7 @@ Stream does not have toString() method, so we use forEach() to print out element
 
 2. Collecting the elements of stream into a collection to reuse or inspect: .collect() - This is a terminal method.
 
-Because Streams are consumable, it cannot be reused. If you try to preint the elements of the stream again after forEach() operation, it will throw an IllegalStateException
+Because Streams are consumable, it cannot be reused. If you try to print the elements of the stream again after forEach() operation, it will throw an IllegalStateException
 
 It performs a mutable reduction operation on the elements using a Collector. Sometimes it uses to transform elements into a single result, an alternative for .reduce()
 
